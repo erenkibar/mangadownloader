@@ -36,7 +36,7 @@ optional arguments:
   -c CHAPTER, --chapter CHAPTER
                         Enter the chapter you want to download
 
-```
+````
 ## Authors
 
 * **Eren Kibar** - *Initial work* - [erenkibar](https://github.com/erenkibar)
