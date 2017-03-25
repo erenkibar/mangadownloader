@@ -1,4 +1,4 @@
-#    A simple command-line to download manga.
+#    A simple command-line tool to download manga.
 #    Copyright (C) <year>  <name of author>
 #
 #    This program is free software: you can redistribute it and/or modify
