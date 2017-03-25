@@ -16,7 +16,8 @@ git clone http://github.com/erenkibar/mangadownloader.git
 ```
 sudo pacman -S python-beautifulsoup4 python-requests
 ```
-#### On Ubuntu
+
+#### On Debian/Ubuntu/Ubuntu-based distros(e.g Linux Mint)
 ```
 sudo apt-get install python3-bs4 python3-requests
 ```
