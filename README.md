@@ -1,11 +1,12 @@
 # Manga Downloader
 
-This is a very simple command-line tool for downloading manga. This is the first properly working version. A lot of features to be included in the next commits.
+This is a very simple command-line tool for downloading manga written in Python. This is the first properly working version. A lot of features to be included in the next commits.
 
 ## Getting Started
-
-Manga Downloader is written in Python. 
-Just fetch the repository to get started.
+Just clone the repository to get started.
+````
+git clone http://github.com/erenkibar/mangadownloader.git
+````
 ### Dependencies
 	Python 3
 	BeautifulSoup
