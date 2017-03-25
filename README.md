@@ -18,7 +18,7 @@ sudo pacman -S python-beautifulsoup4 python-requests
 ```
 #### On Ubuntu
 ```
-sudo apt-get install python-bs4 python-requests
+sudo apt-get install python3-bs4 python3-requests
 ```
 ## Usage
 You can start the program with:
