@@ -18,42 +18,65 @@
 
 #!/usr/bin/env python
 
-import os, pwd
-import urllib.request,html.parser
-from urllib.error import URLError
+import os
+import sys
+import pwd
+import urllib.request
+import argparse
+
 from bs4 import BeautifulSoup as BS
-import requests,argparse
+import requests
 
 def main():
+    
     cur_dir = os.getcwd()
-    parser = argparse.ArgumentParser(description="This is a command line tool for downloading manga.")
-    parser.add_argument('-m' , '--manga', type=str, required=True)
-    parser.add_argument('-p' , '--path', type=str, default='cur_dir', help="Default path is the current working directory")
-    parser.add_argument('-c' , '--chapter', type=str, required=True, help="Enter the chapter you want to download")
+    parser = argparse.ArgumentParser(description="This is a command line tool" 
+                                                    "for downloading manga.")
+    parser.add_argument('-m' , '--manga', 
+                        type=str, 
+                        required=True)
+    parser.add_argument('-p' , '--path', 
+                        type=str, 
+                        default=cur_dir, 
+                        help="Default path is the current working directory")
+    parser.add_argument('-fc', '--firstchapter',
+                        type=int,
+                        required=True,
+                        help='First chapter to download')
+    parser.add_argument('-lc', '--lastchapter',
+                        required=True,
+                        type=int,
+                        help='Last chapter to download')         
     args = parser.parse_args()
-    download(args.manga,args.chapter,args.path)
+    if(args.firstchapter > args.lastchapter):
+        print("First chapter cannot be greater than last chapter")
+        sys.exit(0)
+    download_range(args.manga,args.firstchapter,args.lastchapter,args.path)
 
-def download(manganame,ch,path):
-    url = 'http://www.mangapanda.com/' + manganame + '/' + ch + "/"
-    source = BS(urllib.request.urlopen(url),"html.parser")
-    page_number = len(source.findAll("option"))
-    for i in range(1,page_number+1):
-        #This is for getting the image link from the mangas page 
-        url = 'http://www.mangapanda.com/' + manganame + '/' + ch + "/" + str(i)
-        source = BS(urllib.request.urlopen(url).read(),"html.parser")
-        jpg = source.find("img")
-        image = jpg["src"]
-        #It ends here 
-        #Using requests i save the image file using a proper header which the server accepts 
-        req = requests.get(image)
-        file = open(str(ch) + str(i),'wb')
-        for chunk in req.iter_content(100000):
-            file.write(chunk)
-        file.close()
+def download_range(manganame,fchap,lchap,path): 
+    #downloading and saving into proper folders
+    for c in range(fchap,lchap+1):
+    #Creating a folder for each chapter 
+        url = 'http://www.mangapanda.com/' + manganame + '/' + str(c) + '/'
+        source = BS(urllib.request.urlopen(url),'html.parser')
+        page_number = len(source.findAll('option'))
+        full_path = path + '/' + manganame + '/' + "Chapter"+ str(c);
+        if not os.path.exists(full_path):
+            os.makedirs(full_path,exist_ok=True)
+        os.chdir(full_path)
+        print("Downloading chapter " + str(c) )
+        for i in range(1,page_number+1): 
+            #This is for getting the image link from the mangas page
+            url = 'http://www.mangapanda.com/' + manganame  + '/' + str(c) + '/' +str(i)
+            source = BS(urllib.request.urlopen(url).read(),'html.parser')
+            jpg = source.find('img')
+            image = jpg['src']
+            #It ends here
+            #Saving the image file
+            req = requests.get(image)
+            file = open(str(i),'wb')
+            for chunk in req.iter_content(100000):
+                file.write(chunk)
+            file.close()
 
 main()
-
-
-        
-
-
