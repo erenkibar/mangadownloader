@@ -67,6 +67,7 @@ def check_url(manganame,fchap,lchap):
     empty_fchap = source_fchap('option')
     if(empty_manga == None):
         print("No such manga found: " + manganame)
+        print("Make sure to use '-' instead of spaces!")
         sys.exit()
     elif(empty_fchap == None or empty_lchap == None):
         print("No chapter found! Either there is no such chapter or it is not released yet.")
