@@ -62,4 +62,4 @@ This project is licensed under GPLv3 - see the [LICENSE](LICENSE) file for detai
 
 * ✔ Support for downloading a range of chapters instead of only one.
 *   Better exception handling
-*   Better directory handling 
+* ✔ Better directory handling 
