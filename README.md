@@ -4,7 +4,7 @@ This is a very simple command-line tool for downloading manga written in Python.
 ## To Do
 
 *   MangaHere support
-*   CBR archive support
+* ✔ CBZ archive support
 * ✔ Support for downloading a range of chapters instead of only one.
 * ✔ Better exception handling
 * ✔ Better directory handling

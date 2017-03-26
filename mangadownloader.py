@@ -20,10 +20,9 @@
 
 import os
 import sys
-import pwd
 import urllib.request
-import urllib.error
 import argparse
+import zipfile
 
 from bs4 import BeautifulSoup as BS
 import requests
@@ -86,7 +85,7 @@ def download_range(manganame,fchap,lchap,path):
         if not os.path.exists(full_path):
             os.makedirs(full_path,exist_ok=True)
         os.chdir(full_path)
-        print("Downloading chapter " + str(c) )
+        print("Downloading chapter " + str(c) + "..." )
         for i in range(1,page_number+1): 
             #This is for getting the image link from the mangas page
             url = 'http://www.mangapanda.com/' + manganame  + '/' + str(c) + '/' +str(i)
@@ -96,13 +95,22 @@ def download_range(manganame,fchap,lchap,path):
             #It ends here
             #Saving the image file
             req = requests.get(image)
-            file = open(str(i),'wb')
+            file = open(str(i).zfill(3)+".jpg",'wb')
             for chunk in req.iter_content(100000):
                 file.write(chunk)
             file.close()
-    
+        make_zip(c,page_number,full_path)
 
-
+def make_zip(c,page_number,path):
+    i = 1
+    full_path = path + "/"
+    zip = zipfile.ZipFile("Chapter"+str(c) +".cbz", 'w')
+    for each in os.listdir(full_path): 
+        zip.write(str(i).zfill(3)+".jpg")
+        i=i+1
+        if(i == page_number+1):
+            break
+    zip.close()
 
 try:
     main()
