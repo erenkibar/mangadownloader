@@ -1,6 +1,14 @@
 # Manga Downloader
 
 This is a very simple command-line tool for downloading manga written in Python. This is the first properly working version. A lot of features to be included in the next commits.
+## To Do
+
+*   MangaHere support
+*   CBR archive support
+* ✔ Support for downloading a range of chapters instead of only one.
+* ✔ Better exception handling
+* ✔ Better directory handling
+
 
 ## Getting Started
 Just clone the repository to get started.
@@ -44,7 +52,6 @@ optional arguments:
 ````
 ````
 python mangadownloader.py -m fairy-tail -fc 8 -lc 10
-
 ````
 The above example will download chapters between 8 and 10 of Fairy Tail.
 If you want to download only one chapter pass the same value to -fc and -lc.
@@ -58,8 +65,3 @@ The program itself creates the directory for manga and chapters. Path is current
 ## License
 
 This project is licensed under GPLv3 - see the [LICENSE](LICENSE) file for details
-## To Do
-
-* ✔ Support for downloading a range of chapters instead of only one.
-*   Better exception handling
-* ✔ Better directory handling 

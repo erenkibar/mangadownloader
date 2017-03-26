@@ -22,6 +22,7 @@ import os
 import sys
 import pwd
 import urllib.request
+import urllib.error
 import argparse
 
 from bs4 import BeautifulSoup as BS
@@ -51,7 +52,28 @@ def main():
     if(args.firstchapter > args.lastchapter):
         print("First chapter cannot be greater than last chapter")
         sys.exit(0)
+    check_url(args.manga,args.firstchapter,args.lastchapter)
     download_range(args.manga,args.firstchapter,args.lastchapter,args.path)
+
+def check_url(manganame,fchap,lchap):
+#function for checking if manga, first chapter and last chapter exists
+    url_manga = 'http://www.mangapanda.com/' + manganame + '/' + str(1)
+    url_fchap = 'http://www.mangapanda.com/' + manganame + '/' + str(fchap)
+    url_lchap = 'http://www.mangapanda.com/' + manganame + '/' + str(lchap)
+    source_manga = BS(urllib.request.urlopen(url_manga),'html.parser')
+    source_fchap = BS(urllib.request.urlopen(url_fchap),'html.parser')
+    source_lchap = BS(urllib.request.urlopen(url_lchap),'html.parser')
+    empty_manga = source_manga.find('body')
+    empty_lchap = source_lchap.find('option')
+    empty_fchap = source_fchap('option')
+    if(empty_manga == None):
+        print("No such manga found: " + manganame)
+        sys.exit()
+    elif(empty_fchap == None or empty_lchap == None):
+        print("No chapter found! Either there is no such chapter or it is not released yet.")
+        sys.exit()
+    else:
+        pass
 
 def download_range(manganame,fchap,lchap,path): 
     #downloading and saving into proper folders
@@ -78,5 +100,14 @@ def download_range(manganame,fchap,lchap,path):
             for chunk in req.iter_content(100000):
                 file.write(chunk)
             file.close()
+    
 
-main()
+
+
+try:
+    main()
+except KeyboardInterrupt :
+    print("Program terminated!")
+
+
+
