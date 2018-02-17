@@ -19,19 +19,23 @@
 #!/usr/bin/env python
 
 import os
+import string
 import sys
 import urllib.request
 import argparse
 import zipfile
+import requests
+import glob
 
 from bs4 import BeautifulSoup as BS
-import requests
+
+
 
 def main():
     
     cur_dir = os.getcwd()
     parser = argparse.ArgumentParser(description="This is a command line tool" 
-                                                    "for downloading manga.")
+                                                  "for downloading manga.")
     parser.add_argument('-m' , '--manga', 
                         type=str, 
                         required=True)
@@ -54,6 +58,7 @@ def main():
     check_url(args.manga,args.firstchapter,args.lastchapter)
     download_range(args.manga,args.firstchapter,args.lastchapter,args.path)
 
+	
 def check_url(manganame,fchap,lchap):
 #function for checking if manga, first chapter and last chapter exists
     url_manga = 'http://www.mangapanda.com/' + manganame + '/' + str(1)
@@ -77,6 +82,10 @@ def check_url(manganame,fchap,lchap):
 
 def download_range(manganame,fchap,lchap,path): 
     #downloading and saving into proper folders
+    url_chap = url_manga = 'http://www.mangapanda.com/' + manganame
+    chapsource = BS(urllib.request.urlopen(url_chap),'html.parser')
+    chap_number = len(chapsource.findAll('div', attrs={'class':'chico_manga'}))
+    print("There are" + str(chap_number) + "chapters for this manga.")
     for c in range(fchap,lchap+1):
     #Creating a folder for each chapter 
         url = 'http://www.mangapanda.com/' + manganame + '/' + str(c) + '/'
@@ -100,6 +109,7 @@ def download_range(manganame,fchap,lchap,path):
             for chunk in req.iter_content(100000):
                 file.write(chunk)
             file.close()
+			
         make_zip(c,page_number,full_path)
 
 def make_zip(c,page_number,path):
@@ -112,11 +122,14 @@ def make_zip(c,page_number,path):
         if(i == page_number+1):
             break
     zip.close()
+    image_files = glob.glob('*.jpg')
+    for i in image_files:
+        os.remove(i)
+
+
 
 try:
     main()
 except KeyboardInterrupt :
-    print("Program terminated!")
-
-
+    print("\nProgram terminated!")
 
